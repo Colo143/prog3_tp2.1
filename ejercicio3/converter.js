@@ -40,6 +40,40 @@ class CurrencyConverter {
         }
 
     }
+
+    async getRateDifference(fromCurrency, toCurrency, previousDate) {
+
+        try {
+            const today = this.formatDate(new Date());
+            const responseToday = await fetch(
+                `${this.apiUrl}/${today}?from=${fromCurrency.code}&to=${toCurrency.code}`
+            );
+            const responsePrevious = await fetch(
+                `${this.apiUrl}/${previousDate}?from=${fromCurrency.code}&to=${toCurrency.code}`
+            );
+
+            const dataToday = await responseToday.json();
+            const dataPrevious = await responsePrevious.json();
+
+            const rateToday = dataToday.rates[toCurrency.code];
+            const ratePrevious = dataPrevious.rates[toCurrency.code];
+
+            return rateToday - ratePrevious;
+        } catch (error) {
+            console.error('Error fetching rate difference:', error);
+            return null;
+        }
+
+    }
+
+    formatDate(date) {
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+        
+    }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
