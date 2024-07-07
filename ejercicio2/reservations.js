@@ -74,31 +74,29 @@ document
 
         const customerName = document.getElementById("customer-name").value;
         const customerEmail = document.getElementById("customer-email").value;
-        const reservationDate =
-            document.getElementById("reservation-date").value;
+        const reservationDate = document.getElementById("reservation-date").value;
         const guests = parseInt(document.getElementById("guests").value);
 
-        if (Reservation.validateReservation(reservationDate, guests)) {
-            const customerId = restaurant.reservations.length + 1;
-            const reservationId = restaurant.reservations.length + 1;
+        const customerId = restaurant.reservations.length + 1;
+        const reservationId = restaurant.reservations.length + 1;
 
-            const customer = new Customer(
-                customerId,
-                customerName,
-                customerEmail
-            );
-            const reservation = new Reservation(
-                reservationId,
-                customer,
-                reservationDate,
-                guests
-            );
+        const customer = new Customer(
+            customerId, 
+            customerName, 
+            customerEmail
+        );
+        const reservation = new Reservation(
+            reservationId, 
+            customer, 
+            reservationDate, 
+            guests
+        );
 
+        if (Reservation.validateReservation({ date: reservation.date, guests: reservation.guests })) {
             restaurant.addReservation(reservation);
             restaurant.render();
         } else {
             alert("Datos de reserva inválidos");
-            return;
         }
     });
 
