@@ -64,9 +64,29 @@
                             </div>
                         </div>
                     </form>
+                    <div class="field mt-4">
+                        <label class="label">Fecha anterior</label>
+                        <div class="control">
+                            <input
+                                class="input"
+                                type="date"
+                                id="previous-date"
+                            />
+                        </div>
+                    </div>
+                    <button
+                        class="button is-primary mt-4"
+                        id="compare-button"
+                    >
+                        Comparar con hoy
+                    </button>
                     <div
                         id="result"
                         class="subtitle mt-4 has-text-primary"
+                    ></div>
+                    <div
+                        id="difference-result"
+                        class="subtitle mt-4 has-text-danger"
                     ></div>
                 </div>
             </div>
