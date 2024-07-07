@@ -57,7 +57,6 @@ class SensorManager {
             const data = await response.json();
             data.forEach(sensorData => {
                 const { id, name, type, value, unit, updated_at } = sensorData;
-                // Validar el tipo de sensor
                 if (["temperature", "humidity", "pressure"].includes(type)) {
                     const sensor = new Sensor(id, name, type, value, unit, updated_at);
                     this.addSensor(sensor);
