@@ -50,7 +50,27 @@ class SensorManager {
         }
     }
 
-    async loadSensors(url) {}
+    async loadSensors(url) {
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            data.forEach(sensorData => {
+                const { id, name, type, value, unit, updated_at } = sensorData;
+                // Validar el tipo de sensor
+                if (["temperature", "humidity", "pressure"].includes(type)) {
+                    const sensor = new Sensor(id, name, type, value, unit, updated_at);
+                    this.addSensor(sensor);
+                } else {
+                    console.error(`Tipo de sensor no válido: ${type}`);
+                }
+            });
+            this.render();
+        } catch (error) {
+            console.error('Error al cargar los sensores:', error);
+        }
+
+    }
 
     render() {
         const container = document.getElementById("sensor-container");
