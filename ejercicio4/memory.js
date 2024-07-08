@@ -117,6 +117,10 @@ class MemoryGame {
         this.board = board;
         this.flippedCards = [];
         this.matchedCards = [];
+        this.moves = 0;
+        this.timer = 0;
+        this.timerInterval = null;
+
         if (flipDuration < 350 || isNaN(flipDuration) || flipDuration > 3000) {
             flipDuration = 350;
             alert(
@@ -126,6 +130,7 @@ class MemoryGame {
         this.flipDuration = flipDuration;
         this.board.onCardClick = this.#handleCardClick.bind(this);
         this.board.reset();
+        this.#startTimer();
     }
 
     #handleCardClick(card) {
@@ -134,6 +139,8 @@ class MemoryGame {
             this.flippedCards.push(card);
 
             if (this.flippedCards.length === 2) {
+                this.moves++;
+                document.getElementById("move-counter").textContent = this.moves;
                 setTimeout(() => this.checkForMatch(), this.flipDuration);
             }
         }
@@ -152,6 +159,7 @@ class MemoryGame {
         this.flippedCards = [];
 
         if (this.matchedCards.length === this.board.cards.length) {
+            clearInterval(this.timerInterval);
             setTimeout(() => alert("¡Has ganado!"), this.flipDuration);
         }
     }
@@ -159,9 +167,22 @@ class MemoryGame {
     resetGame() {
         this.flippedCards = [];
         this.matchedCards = [];
+        this.moves = 0;
+        document.getElementById("move-counter").textContent = this.moves;
         this.board.reset();
+        this.#startTimer();
     }
-    
+
+    #startTimer() {
+        clearInterval(this.timerInterval);
+        this.timer = 0;
+        document.getElementById("timer").textContent = `${this.timer}s`;
+        this.timerInterval = setInterval(() => {
+            this.timer++;
+            document.getElementById("timer").textContent = `${this.timer}s`;
+        }, 1000);
+    }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
