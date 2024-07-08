@@ -92,7 +92,7 @@ document
             guests
         );
 
-        if (Reservation.validateReservation({ date: reservation.date, guests: reservation.guests })) {
+        if (Reservation.validateReservation(reservation)) {
             restaurant.addReservation(reservation);
             restaurant.render();
         } else {
@@ -103,9 +103,9 @@ document
 const restaurant = new Restaurant("El Lojal Kolinar");
 
 const customer1 = new Customer(1, "Shallan Davar", "shallan@gmail.com");
-const reservation1 = new Reservation(1, customer1, "2024-12-31T20:00:00", 4);
+const reservation1 = new Reservation(1, customer1, "2024-07-31T20:00:00", 4);
 
-if (Reservation.validateReservation(reservation1.date, reservation1.guests)) {
+if (Reservation.validateReservation(reservation1)) {
     restaurant.addReservation(reservation1);
     restaurant.render();
 } else {
