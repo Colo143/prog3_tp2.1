@@ -109,7 +109,7 @@ class Board {
             }
         });
     }
-    
+
 }
 
 class MemoryGame {
@@ -138,6 +138,30 @@ class MemoryGame {
             }
         }
     }
+
+    checkForMatch() {
+        const [card1, card2] = this.flippedCards;
+
+        if (card1.matches(card2)) {
+            this.matchedCards.push(card1, card2);
+        } else {
+            card1.toggleFlip();
+            card2.toggleFlip();
+        }
+
+        this.flippedCards = [];
+
+        if (this.matchedCards.length === this.board.cards.length) {
+            setTimeout(() => alert("¡Has ganado!"), this.flipDuration);
+        }
+    }
+
+    resetGame() {
+        this.flippedCards = [];
+        this.matchedCards = [];
+        this.board.reset();
+    }
+    
 }
 
 document.addEventListener("DOMContentLoaded", () => {
