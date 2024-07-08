@@ -72,7 +72,7 @@ class CurrencyConverter {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-        
+
     }
 }
 
@@ -81,6 +81,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const resultDiv = document.getElementById("result");
     const fromCurrencySelect = document.getElementById("from-currency");
     const toCurrencySelect = document.getElementById("to-currency");
+    const compareButton = document.getElementById('compare-button');
+    const previousDateInput = document.getElementById('previous-date');
+    const differenceResultDiv = document.getElementById('difference-result');
 
     const converter = new CurrencyConverter("https://api.frankfurter.app");
 
@@ -112,6 +115,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             resultDiv.textContent = "Error al realizar la conversión.";
         }
+    });
+    
+    compareButton.addEventListener('click', async () => {
+        const previousDate = previousDateInput.value;
+        if (!previousDate) {
+            differenceResultDiv.textContent = 'Por favor, seleccione una fecha anterior.';
+            return;
+        }
+
+        const fromCurrency = converter.currencies.find(
+            (currency) => currency.code === fromCurrencySelect.value
+        );
+        const toCurrency = converter.currencies.find(
+            (currency) => currency.code === toCurrencySelect.value
+        );
+
+        const rateDifference = await converter.getRateDifference(
+            fromCurrency,
+            toCurrency,
+            previousDate
+        );
+
+        if (rateDifference !== null && !isNaN(rateDifference)) {
+            differenceResultDiv.textContent = `La diferencia en la tasa de cambio entre hoy y ${previousDate} es de ${rateDifference.toFixed(4)}.`;
+        } else {
+            differenceResultDiv.textContent = 'Error al calcular la diferencia de tasa.';
+        }
+
     });
 
     function populateCurrencies(selectElement, currencies) {
